@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <link rel="stylesheet" href="./main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaflet</title>
+</head>
+<body> 
+    <div id="map"></div>
+
+    <script>
+
+        var map = L.map('map').setView([0, 0], 2);
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+        let myIcon = L.icon({
+        iconUrl: 'marker.png',
+        iconSize: [30, 30]
+        });
+
+        fetch(`https://random-data-api.com/api/v2/addresses?size=50`)
+        .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            for (let i = 0; i < data.length; i++){
+                let marker = L.marker([data[i].latitude, data[i].longitude], {icon: myIcon}).addTo(map);
+                marker.bindPopup("<p> Широта: " + data[i].latitude.toFixed(5) + "</p> <p> Долгота: " + data[i].longitude.toFixed(5) + "</p>")
+            }
+        })
+        .catch((error) => {
+            console.error(error.message)
+        })
+
+    </script>
+</body>
+</html>
