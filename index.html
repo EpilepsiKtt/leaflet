@@ -9,36 +9,39 @@
     <title>Leaflet</title>
 </head>
 <body> 
-    <div id="map"></div>
+    <div class="container">
 
-    <script>
+        <div id="map"></div>
 
-        var map = L.map('map').setView([0, 0], 2);
+            <script>
 
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        }).addTo(map);
+                var map = L.map('map').setView([0, 0], 2);
 
-        let myIcon = L.icon({
-        iconUrl: 'marker.png',
-        iconSize: [30, 30]
-        });
+                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                }).addTo(map);
 
-        fetch(`https://random-data-api.com/api/v2/addresses?size=50`)
-        .then((response) => {
-            return response.json();
-        })
-        .then((data) => {
-            for (let i = 0; i < data.length; i++){
-                let marker = L.marker([data[i].latitude, data[i].longitude], {icon: myIcon}).addTo(map);
-                marker.bindPopup("<p> Широта: " + data[i].latitude.toFixed(5) + "</p> <p> Долгота: " + data[i].longitude.toFixed(5) + "</p>")
-            }
-        })
-        .catch((error) => {
-            console.error(error.message)
-        })
+                let myIcon = L.icon({
+                iconUrl: 'marker.png',
+                iconSize: [30, 30]
+                });
 
-    </script>
+                fetch(`https://random-data-api.com/api/v2/addresses?size=50`)
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    for (let i = 0; i < data.length; i++){
+                        let marker = L.marker([data[i].latitude, data[i].longitude], {icon: myIcon}).addTo(map);
+                        marker.bindPopup("<p> Широта: " + data[i].latitude.toFixed(5) + "</p> <p> Долгота: " + data[i].longitude.toFixed(5) + "</p>")
+                    }
+                })
+                .catch((error) => {
+                    console.error(error.message)
+                })
+
+            </script>       
+    </div>
 </body>
 </html>
